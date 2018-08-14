@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">ChatSite</string>
+    <string name="welcome">Welcome</string>
+    <string name="need_a_new_account">Need a new account?</string>
+    <string name="username">Username</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="create_account">Create Account</string>
 </resources>
