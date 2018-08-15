@@ -1,10 +1,13 @@
 package apps.nocturnal.com.chatsite;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -22,10 +25,21 @@ public class RegisterActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
 
+    private Toolbar mToolbar;
+
+    private ProgressDialog mRegProgress;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
+
+        mToolbar = (Toolbar) findViewById(R.id.register_appbar);
+        setSupportActionBar(mToolbar);
+        getSupportActionBar().setTitle("Create Account");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        mRegProgress = new ProgressDialog(this);
 
         mAuth = FirebaseAuth.getInstance();
 
@@ -42,7 +56,15 @@ public class RegisterActivity extends AppCompatActivity {
                 String email = mEmail.getEditText().getText().toString();
                 String password = mPassword.getEditText().getText().toString();
 
-                registerUser(username,email,password);
+                if( !TextUtils.isEmpty(username) && !TextUtils.isEmpty(email) && !TextUtils.isEmpty(password)){
+
+                    mRegProgress.setTitle("Registering");
+                    mRegProgress.setMessage("Please wait while we create your account..");
+                    mRegProgress.setCanceledOnTouchOutside(false);
+                    mRegProgress.show();
+
+                    registerUser(username,email,password);
+                }
 
             }
         });
@@ -55,12 +77,14 @@ public class RegisterActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
 
+                            mRegProgress.dismiss();
                             Intent mainIntent = new Intent(RegisterActivity.this, MainActivity.class);
+                            mainIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                             startActivity(mainIntent);
                             finish();
 
                         } else {
-
+                            mRegProgress.hide();
                             Toast.makeText(RegisterActivity.this, "Authentication failed.",
                                     Toast.LENGTH_LONG).show();
 
