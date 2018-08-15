@@ -75,6 +75,11 @@ public class MainActivity extends AppCompatActivity {
             FirebaseAuth.getInstance().signOut();
             sendtoStart();
         }
+
+        if(item.getItemId()==R.id.main_accsettings_btn){
+            Intent settingsIntent = new Intent (MainActivity.this, SettingActivity.class);
+            startActivity(settingsIntent);
+        }
         return true;
     }
 }
