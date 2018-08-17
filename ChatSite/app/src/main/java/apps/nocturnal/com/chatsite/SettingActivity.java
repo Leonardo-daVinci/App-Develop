@@ -12,6 +12,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -63,7 +65,6 @@ public class SettingActivity extends AppCompatActivity {
         mCurrentUser = FirebaseAuth.getInstance().getCurrentUser();
         String uid = mCurrentUser.getUid();
         mUserDatabase= FirebaseDatabase.getInstance().getReference().child("Users").child(uid);
-
 
         mUserDatabase.addValueEventListener(new ValueEventListener() {
             @Override
@@ -138,37 +139,33 @@ public class SettingActivity extends AppCompatActivity {
             if (resultCode == RESULT_OK) {
 
                 mProg = new ProgressDialog(SettingActivity.this);
-                mProg.setTitle("Uplading Image");
+                mProg.setTitle("Uploading Image");
                 mProg.setMessage("We are uploading your Profile Image");
                 mProg.show();
 
                 Uri resultUri = result.getUri();
                 String current_uid = mCurrentUser.getUid();
 
-                StorageReference filepath = mImageStore.child("profile_images").child(current_uid+".jpg");
+                final StorageReference filepath = mImageStore.child("profile_images").child(current_uid+".jpg");
 
-                filepath.putFile(resultUri).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
-                        if(task.isSuccessful()){
+                filepath.putFile(resultUri);
 
-                            String download_url = task.getResult().getDownloadUrl().toString();
-                            mUserDatabase.child("Image").setValue(download_url).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                @Override
-                                public void onComplete(@NonNull Task<Void> task) {
-                                    if(task.isSuccessful()){
-                                        mProg.dismiss();
-                                        Toast.makeText(SettingActivity.this,"Image Changed",Toast.LENGTH_LONG).show();
-                                    }
+               filepath.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                   @Override
+                   public void onSuccess( Uri uri) {
+                       final String download_url = uri.toString();
+                       mUserDatabase.child("Image").setValue(download_url).addOnCompleteListener(new OnCompleteListener<Void>() {
+                           @Override
+                           public void onComplete(@NonNull Task<Void> task) {
+                                if(task.isSuccessful()){
+                                    mProg.dismiss();
+                                    Toast.makeText(SettingActivity.this,"Profile Image Changed",Toast.LENGTH_LONG).show();
+                                    Picasso.get().load(download_url).into(mImage);
                                 }
-                            });
-
-                        }
-                        else{
-                            Toast.makeText(SettingActivity.this,"Cannot change image now",Toast.LENGTH_LONG).show();
-                        }
-                    }
-                });
+                           }
+                       });
+                   }
+               });
 
             } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
                 Exception error = result.getError();

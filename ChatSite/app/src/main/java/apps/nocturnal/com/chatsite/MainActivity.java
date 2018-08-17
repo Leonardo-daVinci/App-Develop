@@ -30,15 +30,15 @@ public class MainActivity extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
 
-        mToolbar = (Toolbar)findViewById(R.id.main_page_toolbar);
+        mToolbar = findViewById(R.id.main_page_toolbar);
         setSupportActionBar(mToolbar);
         getSupportActionBar().setTitle(R.string.app_name);
 
-        mViewpager = (ViewPager) findViewById(R.id.main_Pager);
+        mViewpager =  findViewById(R.id.main_Pager);
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
         mViewpager.setAdapter(mSectionsPagerAdapter);
 
-        mTabLayout = (TabLayout) findViewById(R.id.main_tabs);
+        mTabLayout =  findViewById(R.id.main_tabs);
         mTabLayout.setupWithViewPager(mViewpager);
     }
 
@@ -70,15 +70,23 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         super.onOptionsItemSelected(item);
 
-        if(item.getItemId()==R.id.main_logout_btn){
+        switch(item.getItemId()){
 
-            FirebaseAuth.getInstance().signOut();
-            sendtoStart();
-        }
+            case R.id.main_logout_btn:
+                FirebaseAuth.getInstance().signOut();
+                sendtoStart();
+                break;
 
-        if(item.getItemId()==R.id.main_accsettings_btn){
-            Intent settingsIntent = new Intent (MainActivity.this, SettingActivity.class);
-            startActivity(settingsIntent);
+            case R.id.main_accsettings_btn:
+                Intent settingsIntent = new Intent (MainActivity.this, SettingActivity.class);
+                startActivity(settingsIntent);
+                break;
+
+            case R.id.main_allusers_btn:
+                Intent usersIntent = new Intent (MainActivity.this, UsersActivity.class);
+                startActivity(usersIntent);
+                break;
+
         }
         return true;
     }
