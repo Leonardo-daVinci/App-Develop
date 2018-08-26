@@ -1,5 +1,6 @@
 package apps.nocturnal.com.chatsite;
 
+import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -9,17 +10,24 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.squareup.picasso.Picasso;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class UsersActivity extends AppCompatActivity {
 
     private Toolbar mToolbar;
     private RecyclerView mUsersList;
+
+    private FirebaseRecyclerAdapter<Users,UsersActivity.UsersViewholder> mUsersAdapter;
 
     private DatabaseReference mDatabase;
 
@@ -28,62 +36,55 @@ public class UsersActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_users);
 
-        mToolbar = (Toolbar) findViewById(R.id.users_appbar);
+        mToolbar = findViewById(R.id.users_appbar);
         setSupportActionBar(mToolbar);
         getSupportActionBar().setTitle("All User");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        mUsersList = (RecyclerView) findViewById(R.id.users_list);
+        mUsersList = findViewById(R.id.users_list);
         mUsersList.setHasFixedSize(true);
         mUsersList.setLayoutManager(new LinearLayoutManager(this));
 
         mDatabase = FirebaseDatabase.getInstance().getReference().child("Users");
+        mDatabase.keepSynced(true); //new
 
+        //new
+        DatabaseReference UserRef = FirebaseDatabase.getInstance().getReference().child("Users");
+        Query UserQuery = UserRef.orderByKey();
+
+        FirebaseRecyclerOptions UsersOptions = new FirebaseRecyclerOptions.Builder<Users>().setQuery(UserQuery,Users.class).build();
+
+        mUsersAdapter = new FirebaseRecyclerAdapter<Users, UsersViewholder>(UsersOptions) {
+            @Override
+            protected void onBindViewHolder(@NonNull UsersViewholder holder, int position, @NonNull final  Users model) {
+                holder.setName(model.getName());
+                holder.setStatus(model.getStatus());
+                holder.setImage(getBaseContext(),model.getImage());
+
+            }
+
+            @NonNull
+            @Override
+            public UsersViewholder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.users_adapter, parent,false);
+
+                return new UsersActivity.UsersViewholder(view);
+            }
+        };
+
+        mUsersList.setAdapter(mUsersAdapter);
     }
 
     @Override
     protected void onStart() {
         super.onStart();
+        mUsersAdapter.startListening();
+    }
 
-        /*FirebaseRecyclerOptions<Users> options =
-                new FirebaseRecyclerOptions.Builder<Users>()
-                       // .setQuery(query, Users.class)
-                        .build();
-
-        FirebaseRecyclerAdapter adapter = new FirebaseRecyclerAdapter<Users, UsersViewholder>(options) {
-            @Override
-            public UsersViewholder onCreateViewHolder(ViewGroup parent, int viewType) {
-                // Create a new instance of the ViewHolder, in this case we are using a custom
-                // layout called R.layout.message for each item
-                View view = LayoutInflater.from(parent.getContext())
-                        .inflate(R.layout.users_adapter, parent, false);
-
-                return new UsersViewholder( view);
-            }
-
-            @Override
-            protected void onBindViewHolder(UsersViewholder holder, int position, Users users) {
-                // Bind the Chat object to the ChatHolder
-               holder.setName(users.getName());
-            }
-        };
-
-        mUsersList.setAdapter(adapter);
-
-
-     /*  FirebaseRecyclerAdapter<Users,UsersViewholder> firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<Users, UsersViewholder>() {
-           @Override
-           protected void onBindViewHolder(@NonNull UsersViewholder holder, int position, @NonNull Users model) {
-
-           }
-
-           @NonNull
-           @Override
-           public UsersViewholder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-               return null;
-           }
-       };*/
-
+    @Override
+    protected void onStop() {
+        super.onStop();
+        mUsersAdapter.stopListening();
     }
 
     public static class UsersViewholder extends RecyclerView.ViewHolder{
@@ -99,6 +100,16 @@ public class UsersActivity extends AppCompatActivity {
             public void setName(String name){
                 TextView userNameView = mView.findViewById(R.id.users_display_name);
                 userNameView.setText(name);
+            }
+
+            public void setStatus (String status){
+            TextView userStatusView = mView.findViewById(R.id.users_status);
+            userStatusView.setText(status);
+            }
+
+            public void setImage (Context context, String image){
+                CircleImageView userImage = mView.findViewById(R.id.users_image);
+                Picasso.get().load(image).into(userImage);             //check this later Picasso.with(context).load(image).into(userImage)
             }
     }
 }

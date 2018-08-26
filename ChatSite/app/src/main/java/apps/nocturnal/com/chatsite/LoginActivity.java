@@ -42,9 +42,9 @@ public class LoginActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("Login");
 
-        mEmail = (TextInputLayout) findViewById(R.id.login_email);
-        mPassword = (TextInputLayout) findViewById(R.id.login_password);
-        mLoginbtn = (Button) findViewById(R.id.login_signin_btn);
+        mEmail =  findViewById(R.id.login_email);
+        mPassword =  findViewById(R.id.login_password);
+        mLoginbtn =  findViewById(R.id.login_signin_btn);
 
         mLoginbtn.setOnClickListener(new View.OnClickListener() {
             @Override

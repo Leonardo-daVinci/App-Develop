@@ -70,10 +70,10 @@ public class SettingActivity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
-                String name = dataSnapshot.child("Name").getValue().toString();
-                String status = dataSnapshot.child("Status").getValue().toString();
-                String image = dataSnapshot.child("Image").getValue().toString();
-                String thumb_image = dataSnapshot.child("Thumb_image").getValue().toString();
+                String name = dataSnapshot.child("name").getValue().toString();
+                String status = dataSnapshot.child("status").getValue().toString();
+                String image = dataSnapshot.child("image").getValue().toString();
+                String thumb_image = dataSnapshot.child("thumb_image").getValue().toString();
 
                 mUsername.setText(name);
                 mStatus.setText(status);
@@ -154,7 +154,7 @@ public class SettingActivity extends AppCompatActivity {
                    @Override
                    public void onSuccess( Uri uri) {
                        final String download_url = uri.toString();
-                       mUserDatabase.child("Image").setValue(download_url).addOnCompleteListener(new OnCompleteListener<Void>() {
+                       mUserDatabase.child("image").setValue(download_url).addOnCompleteListener(new OnCompleteListener<Void>() {
                            @Override
                            public void onComplete(@NonNull Task<Void> task) {
                                 if(task.isSuccessful()){

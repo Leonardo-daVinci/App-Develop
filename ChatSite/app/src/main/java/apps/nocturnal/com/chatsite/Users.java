@@ -2,39 +2,47 @@ package apps.nocturnal.com.chatsite;
 
 public class Users {
 
-    public String Name,Image,Status;
+    public String name,image,status,thumb_image;
 
-    public  Users(){
-
+    public Users(String name, String image, String status, String thumb_image) {
+        this.name = name;
+        this.image = image;
+        this.status = status;
+        this.thumb_image = thumb_image;
     }
 
-    public Users(String name, String image, String status) {
-        Name = name;
-        Image = image;
-        Status = status;
+    public Users(){
     }
 
     public String getName() {
-        return Name;
+        return name;
     }
 
     public void setName(String name) {
-        Name = name;
+        this.name = name;
     }
 
     public String getImage() {
-        return Image;
+        return image;
     }
 
     public void setImage(String image) {
-        Image = image;
+        this.image = image;
     }
 
     public String getStatus() {
-        return Status;
+        return status;
     }
 
     public void setStatus(String status) {
-        Status = status;
+        this.status = status;
+    }
+
+    public String getThumb_image() {
+        return thumb_image;
+    }
+
+    public void setThumb_image(String thumb_image) {
+        this.thumb_image = thumb_image;
     }
 }
