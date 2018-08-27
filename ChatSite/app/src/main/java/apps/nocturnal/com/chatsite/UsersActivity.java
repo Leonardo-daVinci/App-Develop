@@ -1,6 +1,7 @@
 package apps.nocturnal.com.chatsite;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -60,6 +61,17 @@ public class UsersActivity extends AppCompatActivity {
                 holder.setName(model.getName());
                 holder.setStatus(model.getStatus());
                 holder.setImage(getBaseContext(),model.getImage());
+
+                final String user_id = getRef(position).getKey();
+
+                holder.mView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent profileIntent = new Intent (UsersActivity.this, ProfileActivity.class);
+                        profileIntent.putExtra("user_id",user_id);
+                        startActivity(profileIntent);
+                    }
+                });
 
             }
 
