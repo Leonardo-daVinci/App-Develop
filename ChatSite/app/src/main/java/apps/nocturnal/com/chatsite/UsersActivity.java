@@ -103,7 +103,7 @@ public class UsersActivity extends AppCompatActivity {
 
         View mView;
 
-        public UsersViewholder(View itemView) {
+        UsersViewholder(View itemView) {
             super(itemView);
 
             mView = itemView;
