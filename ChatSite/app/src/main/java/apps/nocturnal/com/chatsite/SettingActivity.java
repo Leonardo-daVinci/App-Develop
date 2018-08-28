@@ -25,6 +25,8 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
@@ -64,7 +66,9 @@ public class SettingActivity extends AppCompatActivity {
 
         mCurrentUser = FirebaseAuth.getInstance().getCurrentUser();
         String uid = mCurrentUser.getUid();
+
         mUserDatabase= FirebaseDatabase.getInstance().getReference().child("Users").child(uid);
+        mUserDatabase.keepSynced(true);
 
         mUserDatabase.addValueEventListener(new ValueEventListener() {
             @Override
@@ -72,14 +76,25 @@ public class SettingActivity extends AppCompatActivity {
 
                 String name = dataSnapshot.child("name").getValue().toString();
                 String status = dataSnapshot.child("status").getValue().toString();
-                String image = dataSnapshot.child("image").getValue().toString();
+                final String image = dataSnapshot.child("image").getValue().toString();
                 String thumb_image = dataSnapshot.child("thumb_image").getValue().toString();
 
                 mUsername.setText(name);
                 mStatus.setText(status);
 
-                Picasso.get().load(image).into(mImage);
+                if( !image.equals("default")) {
+                    Picasso.get().load(image).networkPolicy(NetworkPolicy.OFFLINE)
+                            .placeholder(R.drawable.ic_profile).into(mImage, new Callback() {
+                        @Override
+                        public void onSuccess() {
+                        }
 
+                        @Override
+                        public void onError(Exception e) {
+                            Picasso.get().load(image).placeholder(R.drawable.ic_profile).into(mImage);
+                        }
+                    });
+                }
             }
 
             @Override
