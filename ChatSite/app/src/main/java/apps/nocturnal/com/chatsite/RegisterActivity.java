@@ -13,12 +13,15 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 
 import java.util.HashMap;
 
@@ -84,30 +87,39 @@ public class RegisterActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
 
                             FirebaseUser current_user = mAuth.getCurrentUser();
-                            String uid= current_user.getUid();
+                            final String uid= current_user.getUid();
 
-                            //Saving user data in Firebase Database
-                            mDatabase = FirebaseDatabase.getInstance().getReference().child("Users").child(uid);
-
-                            HashMap<String,String> userMap = new HashMap<>();
-                            userMap.put("name", username);
-                            userMap.put("status", "Status here!");
-                            userMap.put("image", "default");
-                            userMap.put("thumb_image", "default");
-
-                            mDatabase.setValue(userMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+                            FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener(new OnSuccessListener<InstanceIdResult>() {
                                 @Override
-                                public void onComplete(@NonNull Task<Void> task) {
-                                    if(task.isSuccessful()){
-                                        //Take user to main page after registering
-                                        mRegProgress.dismiss();
-                                        Intent mainIntent = new Intent(RegisterActivity.this, MainActivity.class);
-                                        mainIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                        startActivity(mainIntent);
-                                        finish();
-                                    }
+                                public void onSuccess(InstanceIdResult instanceIdResult) {
+                                    String token = instanceIdResult.getToken();
+
+                                    //Saving user data in Firebase Database
+                                    mDatabase = FirebaseDatabase.getInstance().getReference().child("Users").child(uid);
+
+                                    HashMap<String,String> userMap = new HashMap<>();
+                                    userMap.put("name", username);
+                                    userMap.put("status", "Status here!");
+                                    userMap.put("image", "default");
+                                    userMap.put("thumb_image", "default");
+                                    userMap.put("token",token);
+
+                                    mDatabase.setValue(userMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            if(task.isSuccessful()){
+                                                //Take user to main page after registering
+                                                mRegProgress.dismiss();
+                                                Intent mainIntent = new Intent(RegisterActivity.this, MainActivity.class);
+                                                mainIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                                startActivity(mainIntent);
+                                                finish();
+                                            }
+                                        }
+                                    });
                                 }
                             });
+
 
                         } else {
                             mRegProgress.hide();

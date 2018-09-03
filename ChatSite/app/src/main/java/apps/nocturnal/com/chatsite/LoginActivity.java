@@ -13,10 +13,15 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -25,6 +30,7 @@ public class LoginActivity extends AppCompatActivity {
     private Button mLoginbtn;
 
     private FirebaseAuth mAuth;
+    private DatabaseReference mUserdatabase;
 
     private ProgressDialog mLoginProg;
 
@@ -36,6 +42,8 @@ public class LoginActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
 
         mLoginProg = new ProgressDialog(this);
+
+        mUserdatabase = FirebaseDatabase.getInstance().getReference().child("Users");
 
         mToolbar = findViewById(R.id.login_appbar);
         setSupportActionBar(mToolbar);
@@ -75,10 +83,26 @@ public class LoginActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
 
                             mLoginProg.dismiss();
-                            Intent mainIntent= new Intent(LoginActivity.this,MainActivity.class);
-                            mainIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                            startActivity(mainIntent);
-                            finish();
+
+                            final String user_id = mAuth.getCurrentUser().getUid();
+                            FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener(new OnSuccessListener<InstanceIdResult>() {
+                                @Override
+                                public void onSuccess(InstanceIdResult instanceIdResult) {
+                                    String token = instanceIdResult.getToken();
+
+                                    mUserdatabase.child(user_id).child("token").setValue(token)
+                                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                @Override
+                                                public void onSuccess(Void aVoid) {
+                                                    Intent mainIntent= new Intent(LoginActivity.this,MainActivity.class);
+                                                    mainIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                                    startActivity(mainIntent);
+                                                    finish();
+                                                }
+                                            });
+                                }
+                            });
+
 
                         } else {
                             mLoginProg.hide();
