@@ -290,6 +290,8 @@ public class ProfileActivity extends AppCompatActivity {
                                                 mProfileSendReq.setEnabled(true);
                                                 mCurrent_state = "not_friends";
                                                 mProfileSendReq.setText("Send Friend Request");
+                                                mProfileDeclineReq.setVisibility(View.INVISIBLE);
+                                                mProfileDeclineReq.setEnabled(false);
                                             }
                                         });
                             }

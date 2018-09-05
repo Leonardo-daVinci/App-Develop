@@ -17,21 +17,41 @@ exports.sendNotification = functions.database.ref('/notifications/{user_id}/{not
         return console.log('Notification has been deleted: ',notification_id);
    }
 
-   const device_token = admin.database().ref(`/Users/${user_id}/token`).once('value');
-   return device_token.then(result =>{
+   const fromUser = admin.database().ref(`/notifications/${user_id}/${notification_id}`).once('value');
+   return fromUser.then(fromUserResult =>{
+        const fromUser_id = fromUserResult.val().from;
+        console.log('Notification from ', fromUser_id);
 
-    const tokenID = result.val();
-    
-   const payload = {
-    notification: {
-        title : "Friend Request",
-        body: "You have a new friend request",
-        icon: "default"
-    }
-   };
+    const userQuery = admin.database().ref(`Users/${fromUser_id}/name`).once('value');
+    return userQuery.then(userResult =>{
 
-   return admin.messaging().sendToDevice(tokenID, payload);
-   
+        const userName = userResult.val();
+
+        
+        const device_token = admin.database().ref(`/Users/${user_id}/token`).once('value');
+        return device_token.then(result =>{
+     
+         const tokenID = result.val();
+         
+        const payload = {
+         notification: {
+             title : "Friend Request",
+             body: `${userName} has sent you friend request!`,
+             icon: "default",
+             click_action : "apps.nocturnal.com.chatsite_NOTIFICATION"
+         },
+
+         data :{
+            from_User_id : fromUser_id
+         }
+
+        };
+     
+        return admin.messaging().sendToDevice(tokenID, payload);
+        
+            });
+
+         });
     });
 
 });

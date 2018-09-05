@@ -40,6 +40,7 @@ dependencies {
     implementation "android.arch.core:common:1.1.1"
 
     implementation 'com.google.firebase:firebase-messaging:17.3.0'
+    implementation 'com.google.firebase:firebase-core:16.0.3'
 }
 
 apply plugin: 'com.google.gms.google-services'
