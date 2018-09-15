@@ -1,17 +1,22 @@
 package apps.nocturnal.com.chatsite;
 
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ChatsFragment extends Fragment {
+public class ChatsFragment extends Fragment implements View.OnClickListener {
+
 
 
     public ChatsFragment() {
@@ -26,4 +31,15 @@ public class ChatsFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_chats, container, false);
     }
 
-}
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        Button mChatsBtn = getActivity().findViewById(R.id.fragchat_chatsbtn);
+        mChatsBtn.setOnClickListener(this);
+    }
+
+    @Override
+    public void onClick(View v) {
+      Intent chatsIntent = new Intent(getActivity(),ChatsActivity.class);
+      startActivity(chatsIntent);
+        }
+    }

@@ -49,7 +49,7 @@ public class UsersActivity extends AppCompatActivity {
         mDatabase = FirebaseDatabase.getInstance().getReference().child("Users");
         mDatabase.keepSynced(true); //new
 
-        //new
+        //new Use mDatabase instead of UserRef
         DatabaseReference UserRef = FirebaseDatabase.getInstance().getReference().child("Users");
         Query UserQuery = UserRef.orderByKey();
 

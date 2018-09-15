@@ -7,7 +7,8 @@
     android:background="@color/colorPrimaryDark"
     tools:context=".SettingActivity">
 
-    <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+    <de.hdodenhof.circleimageview.CircleImageView
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/settings__image"
         android:layout_width="200dp"
         android:layout_height="200dp"

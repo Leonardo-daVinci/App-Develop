@@ -57,11 +57,11 @@ public class SettingActivity extends AppCompatActivity {
 
         mImageStore = FirebaseStorage.getInstance().getReference();
 
-        mImage = (CircleImageView) findViewById(R.id.settings__image);
-        mUsername = (TextView) findViewById(R.id.settings_display_name);
-        mStatus = (TextView) findViewById(R.id.settings_status);
-        mStatusbtn = (Button) findViewById(R.id.settings_statusbtn);
-        mImagebtn = (Button) findViewById(R.id.settings_imagebtn);
+        mImage =  findViewById(R.id.settings__image);
+        mUsername =  findViewById(R.id.settings_display_name);
+        mStatus =  findViewById(R.id.settings_status);
+        mStatusbtn =  findViewById(R.id.settings_statusbtn);
+        mImagebtn =  findViewById(R.id.settings_imagebtn);
 
 
         mCurrentUser = FirebaseAuth.getInstance().getCurrentUser();

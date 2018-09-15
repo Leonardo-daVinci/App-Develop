@@ -1,6 +1,7 @@
 package apps.nocturnal.com.chatsite;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -30,7 +31,7 @@ public class ProfileActivity extends AppCompatActivity {
 
     private ImageView mProfileImage;
     private TextView mProfilename, mProfileStatus, mProfileFriends;
-    private Button mProfileSendReq, mProfileDeclineReq;
+    private Button mProfileSendReq, mProfileDeclineReq,mChatBtn;
 
     private FirebaseUser mCurrentUser;
 
@@ -54,6 +55,17 @@ public class ProfileActivity extends AppCompatActivity {
         mProfileDeclineReq = findViewById(R.id.profile_decline_btn);
         mProfileDeclineReq.setVisibility(View.INVISIBLE);
         mProfileDeclineReq.setEnabled(false);
+        mChatBtn = findViewById(R.id.profile_chat_btn);
+
+        mChatBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent chatIntent = new Intent (ProfileActivity.this, ChatsActivity.class);
+                chatIntent.putExtra("user_id",user_id);
+                startActivity(chatIntent);
+                finish();
+            }
+        });
 
         mUsersdatabase = FirebaseDatabase.getInstance().getReference().child("Users").child(user_id);
         mFriendReqdatabase = FirebaseDatabase.getInstance().getReference().child("Friend_req");
