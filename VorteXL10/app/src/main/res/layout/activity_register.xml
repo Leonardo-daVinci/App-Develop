@@ -6,38 +6,63 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
     android:background="@drawable/bgstart"
-    tools:context=".StartActivity">
+    tools:context=".RegisterActivity">
 
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/textView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="104dp"
-        android:text="VorteXL"
+        android:layout_marginTop="108dp"
+        android:text="Register"
         android:textColor="#002343"
-        android:textSize="56sp"
+        android:textSize="36sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/textView4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="2dp"
-        android:text="v1.0"
+        android:layout_marginTop="8dp"
+        android:text="For an amazing journey ahead!"
+        android:textColor="#002343"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
+        app:layout_constraintTop_toBottomOf="@+id/textView3" />
 
     <android.support.design.widget.TextInputLayout
-        android:id="@+id/start_email"
+        android:id="@+id/register_username"
+        android:layout_width="278dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="24dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:alpha="0.8"
+        android:background="@drawable/buttons"
+        app:layout_constraintBottom_toTopOf="@+id/register_email"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <android.support.design.widget.TextInputEditText
+            android:layout_width="238dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="20dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="8dp"
+            android:hint="Username"
+            android:selectAllOnFocus="false"
+            android:singleLine="true" />
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/register_email"
         android:layout_width="278dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
@@ -63,9 +88,8 @@
             android:singleLine="true" />
     </android.support.design.widget.TextInputLayout>
 
-
     <android.support.design.widget.TextInputLayout
-        android:id="@+id/start_password"
+        android:id="@+id/register_password"
         android:layout_width="278dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
@@ -75,7 +99,7 @@
         android:background="@drawable/buttons"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/start_email">
+        app:layout_constraintTop_toBottomOf="@+id/register_email">
 
         <android.support.design.widget.TextInputEditText
             android:layout_width="238dp"
@@ -89,58 +113,56 @@
             android:singleLine="true" />
     </android.support.design.widget.TextInputLayout>
 
-
     <Button
-        android:id="@+id/start_signinbtn"
+        android:id="@+id/register_registerbtn"
         android:layout_width="278dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="24dp"
         android:background="@drawable/ripplebutton"
-        android:text="Sign in"
+        android:text="Register"
         android:textColor="@color/colorPrimary"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/start_password" />
-
+        app:layout_constraintTop_toBottomOf="@+id/register_password" />
 
     <LinearLayout
-        android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="56dp"
-        android:gravity="end"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/start_signinbtn">
+        app:layout_constraintTop_toBottomOf="@+id/register_registerbtn"
+        android:gravity="end">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="New to VorteXL?"
             android:textColor="#ffffff"
-            android:textSize="14sp" />
+            android:text="Already have an account?"
+            android:textSize="14sp"/>
 
         <Button
-            android:id="@+id/start_registerbtn"
+            android:id="@+id/register_signinbtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
-            android:background="@drawable/ripplebutton"
             android:padding="4dp"
-            android:text="Register"
+            android:background="@drawable/ripplebutton"
+            android:text="Sign In"
             android:textColor="@color/colorPrimary"
-            android:textSize="14sp" />
+            android:textSize="14sp"
+            />
 
     </LinearLayout>
 
     <ProgressBar
-        android:id="@+id/start_progressBar"
+        android:id="@+id/register_progressBar"
         android:indeterminate="true"
         android:max="100"
         android:indeterminateTint="@color/colorPrimaryLight"
