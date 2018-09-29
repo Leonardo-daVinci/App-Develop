@@ -32,10 +32,12 @@ public class ProfileActivity extends AppCompatActivity {
     private ImageView mProfileImage;
     private TextView mProfilename, mProfileStatus, mProfileFriends;
     private Button mProfileSendReq, mProfileDeclineReq,mChatBtn;
+    private String display_name,status,image;
+    private String display_name2,image2;
 
     private FirebaseUser mCurrentUser;
 
-    private DatabaseReference mUsersdatabase, mFriendReqdatabase, mFriendsData, mNotifyData;
+    private DatabaseReference mUsersdatabase, mFriendReqdatabase, mFriendsData, mNotifyData,mMydata;
     private ProgressDialog mProg;
 
     private String mCurrent_state;
@@ -67,13 +69,14 @@ public class ProfileActivity extends AppCompatActivity {
             }
         });
 
+        mCurrentUser = FirebaseAuth.getInstance().getCurrentUser();
+        mCurrent_state = "not_friends";
+
+        mMydata = FirebaseDatabase.getInstance().getReference().child("Users").child(mCurrentUser.getUid());
         mUsersdatabase = FirebaseDatabase.getInstance().getReference().child("Users").child(user_id);
         mFriendReqdatabase = FirebaseDatabase.getInstance().getReference().child("Friend_req");
        mFriendsData = FirebaseDatabase.getInstance().getReference().child("Friends");
        mNotifyData = FirebaseDatabase.getInstance().getReference().child("notifications");
-
-        mCurrentUser = FirebaseAuth.getInstance().getCurrentUser();
-        mCurrent_state = "not_friends";
 
         mProg = new ProgressDialog(this);
         mProg.setTitle("Loading User data");
@@ -81,12 +84,24 @@ public class ProfileActivity extends AppCompatActivity {
         mProg.setCanceledOnTouchOutside(false);
         mProg.show();
 
+        mMydata.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                display_name2 = dataSnapshot.child("name").getValue().toString();
+                image2 = dataSnapshot.child("image").getValue().toString();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+            }
+        });
+
         mUsersdatabase.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                String display_name = dataSnapshot.child("name").getValue().toString();
-                String status = dataSnapshot.child("status").getValue().toString();
-                String image = dataSnapshot.child("image").getValue().toString();
+                display_name = dataSnapshot.child("name").getValue().toString();
+                status = dataSnapshot.child("status").getValue().toString();
+                image = dataSnapshot.child("image").getValue().toString();
 
                 mProfilename.setText(display_name);
                 mProfileStatus.setText(status);
@@ -230,11 +245,23 @@ public class ProfileActivity extends AppCompatActivity {
 
                     final String currentDate = DateFormat.getDateInstance().format(new Date());
 
-                    mFriendsData.child(mCurrentUser.getUid()).child(user_id).setValue(currentDate)
+                    final HashMap<String,String> FriendMap = new HashMap<>();
+                    FriendMap.put("name",display_name);
+                    FriendMap.put("friendship",currentDate);
+                    FriendMap.put("image",image);
+
+                    mFriendsData.child(mCurrentUser.getUid()).child(user_id).setValue(FriendMap)
                             .addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void aVoid) {
-                                 mFriendsData.child(user_id).child(mCurrentUser.getUid()).setValue(currentDate)
+
+                            HashMap<String,String> FriendMap2 = new HashMap<>();
+                            FriendMap2.put("name",display_name2);
+                            FriendMap2.put("friendship",currentDate);
+                            FriendMap2.put("image",image2);
+
+
+                                 mFriendsData.child(user_id).child(mCurrentUser.getUid()).setValue(FriendMap2)
                                          .addOnSuccessListener(new OnSuccessListener<Void>() {
                                              @Override
                                              public void onSuccess(Void aVoid) {

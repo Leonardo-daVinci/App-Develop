@@ -129,22 +129,23 @@
         app:layout_constraintTop_toBottomOf="@+id/register_password" />
 
     <LinearLayout
+        android:id="@+id/linearLayout2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="56dp"
+        android:gravity="end"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/register_registerbtn"
-        android:gravity="end">
+        app:layout_constraintTop_toBottomOf="@+id/register_registerbtn">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="#ffffff"
             android:text="Already have an account?"
-            android:textSize="14sp"/>
+            android:textColor="#ffffff"
+            android:textSize="14sp" />
 
         <Button
             android:id="@+id/register_signinbtn"
@@ -152,28 +153,27 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
-            android:padding="4dp"
             android:background="@drawable/ripplebutton"
+            android:padding="4dp"
             android:text="Sign In"
             android:textColor="@color/colorPrimary"
-            android:textSize="14sp"
-            />
+            android:textSize="14sp" />
 
     </LinearLayout>
 
     <ProgressBar
         android:id="@+id/register_progressBar"
-        android:indeterminate="true"
-        android:max="100"
-        android:indeterminateTint="@color/colorPrimaryLight"
         style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginEnd="64dp"
+        android:layout_marginStart="64dp"
+        android:layout_marginTop="4dp"
+        android:indeterminate="true"
+        android:indeterminateTint="@color/colorPrimary"
+        android:max="100"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView4" />
 
 </android.support.constraint.ConstraintLayout>

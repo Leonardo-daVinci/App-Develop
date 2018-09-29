@@ -1,6 +1,5 @@
 package apps.nocturnal.com.vortexl10;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Build;
 import android.support.annotation.NonNull;

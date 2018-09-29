@@ -15,7 +15,7 @@ import android.widget.Button;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ChatsFragment extends Fragment implements View.OnClickListener {
+public class ChatsFragment extends Fragment {
 
 
 
@@ -31,15 +31,4 @@ public class ChatsFragment extends Fragment implements View.OnClickListener {
         return inflater.inflate(R.layout.fragment_chats, container, false);
     }
 
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        Button mChatsBtn = getActivity().findViewById(R.id.fragchat_chatsbtn);
-        mChatsBtn.setOnClickListener(this);
-    }
-
-    @Override
-    public void onClick(View v) {
-      Intent chatsIntent = new Intent(getActivity(),ChatsActivity.class);
-      startActivity(chatsIntent);
-        }
     }
