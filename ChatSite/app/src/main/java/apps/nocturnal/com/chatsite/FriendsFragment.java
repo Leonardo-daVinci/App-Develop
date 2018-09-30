@@ -2,6 +2,7 @@ package apps.nocturnal.com.chatsite;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -67,6 +68,17 @@ public class FriendsFragment extends Fragment {
                 holder.setName(model.getName());
                 holder.setFriendship(model.getFriendship());
                 holder.setImage(getContext(),model.getImage());
+
+                final String user_id = getRef(position).getKey();
+
+                holder.mView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent chatsIntent = new Intent (getActivity(),ProfileActivity.class);
+                        chatsIntent.putExtra("user_id",user_id);
+                        startActivity(chatsIntent);
+                    }
+                });
             }
 
             @NonNull

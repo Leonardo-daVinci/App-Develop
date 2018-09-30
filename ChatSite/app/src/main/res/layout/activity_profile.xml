@@ -40,17 +40,6 @@
         android:textColor="@android:color/white"
         android:textSize="16sp" />
 
-    <TextView
-        android:id="@+id/profile_totalFriends"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="207dp"
-        android:text="Total Friends"
-        android:textColor="@android:color/white"
-        android:textSize="16sp" />
-
     <Button
         android:id="@+id/profile_send_req_btn"
         android:layout_width="wrap_content"
@@ -72,13 +61,4 @@
         android:backgroundTint="@android:color/white"
         android:text="DECLINE FRIEND REQUEST"
         android:textColor="@color/colorPrimaryDark" />
-
-    <Button
-        android:id="@+id/profile_chat_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/profile_totalFriends"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="-185dp"
-        android:text="Chat" />
 </RelativeLayout>

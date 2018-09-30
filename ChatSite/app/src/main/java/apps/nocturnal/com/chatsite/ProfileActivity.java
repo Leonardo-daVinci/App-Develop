@@ -30,10 +30,10 @@ import java.util.HashMap;
 public class ProfileActivity extends AppCompatActivity {
 
     private ImageView mProfileImage;
-    private TextView mProfilename, mProfileStatus, mProfileFriends;
-    private Button mProfileSendReq, mProfileDeclineReq,mChatBtn;
+    private TextView mProfilename, mProfileStatus;
+    private Button mProfileSendReq, mProfileDeclineReq;
     private String display_name,status,image;
-    private String display_name2,image2;
+    private String display_name2,image2,status2;
 
     private FirebaseUser mCurrentUser;
 
@@ -51,23 +51,11 @@ public class ProfileActivity extends AppCompatActivity {
 
         mProfileImage = findViewById(R.id.profile_image);
         mProfilename = findViewById(R.id.profile_displayName);
-        mProfileFriends = findViewById(R.id.profile_totalFriends);
         mProfileStatus = findViewById(R.id.profile_status);
         mProfileSendReq = findViewById(R.id.profile_send_req_btn);
         mProfileDeclineReq = findViewById(R.id.profile_decline_btn);
         mProfileDeclineReq.setVisibility(View.INVISIBLE);
         mProfileDeclineReq.setEnabled(false);
-        mChatBtn = findViewById(R.id.profile_chat_btn);
-
-        mChatBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent chatIntent = new Intent (ProfileActivity.this, ChatsActivity.class);
-                chatIntent.putExtra("user_id",user_id);
-                startActivity(chatIntent);
-                finish();
-            }
-        });
 
         mCurrentUser = FirebaseAuth.getInstance().getCurrentUser();
         mCurrent_state = "not_friends";
@@ -89,6 +77,7 @@ public class ProfileActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 display_name2 = dataSnapshot.child("name").getValue().toString();
                 image2 = dataSnapshot.child("image").getValue().toString();
+                status2 = dataSnapshot.child("status").getValue().toString();
             }
 
             @Override
@@ -150,7 +139,6 @@ public class ProfileActivity extends AppCompatActivity {
                                 }
                             });
                         }
-
                     }
 
                     @Override
@@ -249,6 +237,7 @@ public class ProfileActivity extends AppCompatActivity {
                     FriendMap.put("name",display_name);
                     FriendMap.put("friendship",currentDate);
                     FriendMap.put("image",image);
+                    FriendMap.put("status",status);
 
                     mFriendsData.child(mCurrentUser.getUid()).child(user_id).setValue(FriendMap)
                             .addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -259,6 +248,7 @@ public class ProfileActivity extends AppCompatActivity {
                             FriendMap2.put("name",display_name2);
                             FriendMap2.put("friendship",currentDate);
                             FriendMap2.put("image",image2);
+                            FriendMap2.put("status",status2);
 
 
                                  mFriendsData.child(user_id).child(mCurrentUser.getUid()).setValue(FriendMap2)

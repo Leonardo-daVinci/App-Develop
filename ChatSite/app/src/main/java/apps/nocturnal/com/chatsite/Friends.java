@@ -2,13 +2,13 @@ package apps.nocturnal.com.chatsite;
 
 public class Friends {
 
-    public String name,image,friendship,thumb_image;
+    public String name,image,friendship,status;
 
-    public Friends(String name, String image, String friendship, String thumb_image) {
+    public Friends(String name, String image, String friendship, String status) {
         this.name = name;
         this.image = image;
         this.friendship = friendship;
-        this.thumb_image = thumb_image;
+        this.status = status;
     }
 
     public Friends(){
@@ -38,11 +38,11 @@ public class Friends {
         this.friendship = friendship;
     }
 
-    public String getThumb_image() {
-        return thumb_image;
+    public String getStatus() {
+        return status;
     }
 
-    public void setThumb_image(String thumb_image) {
-        this.thumb_image = thumb_image;
+    public void setStatus(String status) {
+        this.status = status;
     }
 }
